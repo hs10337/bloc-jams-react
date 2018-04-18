@@ -1,6 +1,38 @@
 import React, { Component } from 'react';
 
 class PlayerBar extends Component {
+  convertTime(){
+    var duration = this.props.currentTime;
+    var minutes = Math.floor(duration / 60);
+    var seconds = Math.round(duration % 60);
+
+    if(isNaN(seconds)) {
+      return "-:--";
+    }else if(seconds < 10){
+      seconds = "0" + seconds;
+      return minutes + ":" + seconds;
+    }else {
+    return minutes + ":" + seconds;
+    }
+  }
+
+  convertDurationTime(){
+    var duration = this.props.duration;
+    var minutes = Math.floor(duration / 60);
+    var seconds = Math.round(duration % 60);
+
+    if(isNaN(seconds)) {
+      return "-:--";
+    }else if(seconds < 10){
+      seconds = "0" + seconds;
+      return minutes + ":" + seconds;
+    }else {
+    return minutes + ":" + seconds;
+    }
+  }
+
+
+
   render() {
     return(
       <section className="player-bar">
@@ -16,9 +48,17 @@ class PlayerBar extends Component {
         </button>
         </section>
         <section id="time-control">
-          <div className="current-time">-:--</div>
-          <input type="range" className="seek-bar" value="0" />
-          <div className="total-time">-:--</div>
+          <div className="current-time">{this.convertTime()}</div>
+          <input
+            type="range"
+            className="seek-bar"
+            value={(this.props.currentTime / this.props.duration) || 0}
+            max="1"
+            min="0"
+            step="0.01"
+            onChange={this.props.handleTimeChange}
+            />
+          <div className="total-time">{this.convertDurationTime()}</div>
         </section>
         <section id="volume-control">
           <div className="icon ion-volume-low"></div>
